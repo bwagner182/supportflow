@@ -16,6 +16,10 @@ class SupportFlow_UI_SubmissionForm {
 		add_shortcode( 'supportflow_submissionform', array( $this, 'shortcode_submissionform' ) );
 	}
 
+	/**
+	 * Creates a form to be displayed on the WordPress front end for ticket submission.
+	 * @return html HTML to create and display the form on the page.
+	 */
 	public function shortcode_submissionform() {
 		?>
 		<style type="text/css">
@@ -39,33 +43,47 @@ class SupportFlow_UI_SubmissionForm {
 			<form action="" method="POST">
 				<input type="hidden" name="action" value="sf_create_ticket" />
 				<?php wp_nonce_field( '_sf_create_ticket' ) ?>
-
+				<?php // If the client is creating the ticket then this needs to be autofilled and hidden. ?>
 				<p>
-					<label for="fullname"><?php _e( 'Your Name', 'supportflow' ) ?>:</label>
+					<label for="client"><?php html_esc_e( 'Company Name', 'supportflow' ) ?>:</label>
 					<br />
-					<input type="text" required id="fullname" name="fullname" />
+					<input type="text" required id="client" name="client" />
 				</p>
-
+<?php   /* ?>
 				<p>
-					<label for="email"><?php _e( 'Your E-Mail', 'supportflow' ) ?>:</label>
+					<label for="email"><?php html_esc_e( 'Your E-Mail', 'supportflow' ) ?>:</label>
 					<br />
 					<input type="email" required id="email" name="email" />
 				</p>
+<?php //*/ ?>
+				<p>
+					<label for="title"><?php html_esc_e( 'Title', 'supportflow' ) ?>:</label>
+					<br />
+					<input type="text" required id="title" name="title" />
+				</p>
+				
+				<?php // Create a field for Due Date which is hidden for clients ?>
 
 				<p>
-					<label for="subject"><?php _e( 'Subject', 'supportflow' ) ?>:</label>
+					<label for="description"><?php html_esc_e( 'Description', 'supportflow' ) ?>:</label>
 					<br />
-					<input type="text" required id="subject" name="subject" />
+					<textarea required id="description" rows=5 name="description"></textarea>
 				</p>
 
 				<p>
-					<label for="message"><?php _e( 'Message', 'supportflow' ) ?>:</label>
+					<label for="attachments"><?php html_esc_e( 'Attachments', 'supportflow' ); ?>:</label>
 					<br />
-					<textarea required id="message" rows=5 name="message"></textarea>
+					<input type="file" name="attachments" id="attachments" />
 				</p>
 
 				<p>
-					<input type="submit" value="<?php _e( 'Submit', 'supportflow' ) ?>" />
+					<label for="page-url"><?php html_esc_e( 'Page URL', 'supportflow' ); ?>:</label>
+					<br />
+					<input type="text" required name="page-url" id="page-url" />
+				</p>
+
+				<p>
+					<input type="submit" value="<?php html_esc_e( 'Submit', 'supportflow' ) ?>" />
 				</p>
 
 			</form>
@@ -83,23 +101,27 @@ class SupportFlow_UI_SubmissionForm {
 			return;
 		}
 
-		if ( empty( $_POST['fullname'] ) ) {
-			$this->messages[] = __( 'The name field is required.', 'supportflow' );
+		if ( empty( $_POST['client'] ) ) {
+			$this->messages[] = __( 'The company name field is required.', 'supportflow' );
 		}
-
+/*
 		if ( empty( $_POST['email'] ) ) {
 			$this->messages[] = __( 'The email field is required.', 'supportflow' );
 
 		} elseif ( ! is_email( $_POST['email'] ) ) {
 			$this->messages[] = __( 'Please enter a valid e-mail address.', 'supportflow' );
 		}
-
-		if ( empty( $_POST['subject'] ) ) {
-			$this->messages[] = __( 'The subject field is required.', 'supportflow' );
+*/
+		if ( empty( $_POST['title'] ) ) {
+			$this->messages[] = __( 'The title field is required.', 'supportflow' );
 		}
 
-		if ( empty( $_POST['message'] ) ) {
-			$this->messages[] = __( 'You must enter a message.', 'supportflow' );
+		if ( empty( $_POST['description'] ) ) {
+			$this->messages[] = __( 'You must enter a description.', 'supportflow' );
+		}
+
+		if (empty( $_POST['page-url'] ) ) {
+			$this->messages[] = __( 'You must enter a page link.', 'supportflow' );
 		}
 
 		if ( ! empty( $this->messages ) ) {
@@ -111,11 +133,15 @@ class SupportFlow_UI_SubmissionForm {
 
 		$ticket_id = SupportFlow()->create_ticket(
 			array(
-				'subject'            => $_POST['subject'],
-				'message'            => $_POST['message'],
-				'reply_author'       => $_POST['fullname'],
-				'reply_author_email' => $_POST['email'],
-				'customer_email'   => array( $_POST['email'] ),
+				'client'             => $_POST['client'],
+				'title'              => $_POST['title'],
+				'description'        => $_POST['description'],
+				//'reply_author'       => $_POST['fullname'],
+				'client_name'        => $_POST['client-name'],
+				// 'reply_author_email' => $_POST['email'],
+				// 'customer_email'   => array( $_POST['email'] ),
+				'attachments'		 => $_POST['attachments'],
+				'page_url'           => $_POST['page-url'],
 			)
 		);
 

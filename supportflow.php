@@ -553,23 +553,26 @@ class SupportFlow {
 		$post_statuses = $this->post_statuses;
 
 		$defaults = array(
-			'subject'            => '',
-			'message'            => '',
+			'title'              => '',
+			'description'        => '',
 			'date'               => '',
-			'customer_id'      => 0, // If the requester has a WordPress account (ID or username)
-			'customer_email'   => array(), // And an e-mail address
+			'due_date'           => strtotime('+2 weeks'),
+			'customer_id'        => 0, // If the requester has a WordPress account (ID or username)
+			'customer_email'     => array(), // And an e-mail address
 			'reply_author'       => '',
 			'reply_author_email' => '',
 			'status'             => key( $post_statuses ),
 			'assignee'           => - 1, // WordPress user ID or username of ticket assignee/owner
 			'email_account'      => '',
+			'page_url'           => '',
+			'attachments'		 => array(),
 		);
 
 		$args = wp_parse_args( $args, $defaults );
 
 		$ticket = array(
 			'post_type'   => $this->post_type,
-			'post_title'  => $args['subject'],
+			'post_title'  => $args['title'],
 			'post_author' => $args['assignee'],
 			'post_date'   => $args['date'],
 		);
@@ -594,14 +597,14 @@ class SupportFlow {
 			update_post_meta( $ticket_id, 'email_account', $args['email_account'] );
 		}
 
-		// If there was a message, add it to the ticket
-		if ( ! empty( $args['message'] ) && ! empty( $args['customer_email'] ) ) {
+		// If there was a description, add it to the ticket
+		if ( ! empty( $args['description'] ) ) ) {
 			$reply_details = array(
 				'reply_author'       => $args['reply_author'],
 				'reply_author_email' => $args['reply_author_email'],
 				'user_id'            => $args['customer_id'],
 			);
-			$this->add_ticket_reply( $ticket_id, $args['message'], $reply_details );
+			$this->add_ticket_reply( $ticket_id, $args['description'], $reply_details );
 		}
 
 		return $ticket_id;
