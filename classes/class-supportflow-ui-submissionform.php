@@ -73,7 +73,9 @@ class SupportFlow_UI_SubmissionForm {
 				<p>
 					<label for="attachments"><?php esc_html_e( 'Attachments', 'supportflow' ); ?>:</label>
 					<br />
-					<input type="file" name="attachments" multiple=multiple id="attachments" />
+					<div class="drag-drop-buttons">
+						<input type="button" name="attachments" class="button" value="<?php esc_attr( __( 'Attach Files', 'supportflow' ) ) ?>" id="reply-attachment-browse-button" />
+					</div>
 				</p>
 
 				<p>
@@ -130,11 +132,29 @@ class SupportFlow_UI_SubmissionForm {
 
 		// Load required file
 		require_once( SupportFlow()->plugin_dir . 'classes/class-supportflow-admin.php' );
-		require_once( ABSPATH . 'wp-admin' . '/includes/image.php' );
-		require_once( ABSPATH . 'wp-admin' . '/includes/file.php' );
-		require_once( ABSPATH . 'wp-admin' . '/includes/media.php' );
+		
+		// Attach files.
+		global $post;
+		if ( $_FILES ) {
+			$files = $_FILES['attachments'];
+			foreach ( $files['name'] as $key=>$value ) {
+				if ( $files['name'][$key]) {
+					$file = array(
+						'name'        => $files['name'][$key],
+						'type'        => $files['type'][$key],
+						'tmp_name'    => $files['tmp_name'][$key],
+						'error'       => $files['error'][$key],
+						'size'        => $files['size'][$key],
+					);
 
-		$attachments = media_handle_upload( 'attachments', $post->ID );
+					$_FILES = array( 'attachments' => $file );
+
+					foreach ( $_FILES as $file => $array ) {
+						$attachments = wp_insert_attachment( $file, $post->ID );
+					}
+				}
+			}
+		}
 
 		$ticket_id = SupportFlow()->create_ticket(
 			array(
