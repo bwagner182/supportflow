@@ -130,6 +130,11 @@ class SupportFlow_UI_SubmissionForm {
 
 		// Load required file
 		require_once( SupportFlow()->plugin_dir . 'classes/class-supportflow-admin.php' );
+		require_once( ABSPATH . 'wp-admin' . '/includes/image.php' );
+		require_once( ABSPATH . 'wp-admin' . '/includes/file.php' );
+		require_once( ABSPATH . 'wp-admin' . '/includes/media.php' );
+
+		$attachments = media_handle_upload( 'attachments', $post->ID );
 
 		$ticket_id = SupportFlow()->create_ticket(
 			array(
