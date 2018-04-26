@@ -598,7 +598,7 @@ class SupportFlow {
 		}
 
 		// If there was a description, add it to the ticket
-		if ( ! empty( $args['description'] ) ) ) {
+		if ( ! empty( $args['description'] ) ) {
 			$reply_details = array(
 				'reply_author'       => $args['reply_author'],
 				'reply_author_email' => $args['reply_author_email'],
