@@ -45,19 +45,19 @@ class SupportFlow_UI_SubmissionForm {
 				<?php wp_nonce_field( '_sf_create_ticket' ) ?>
 				<?php // If the client is creating the ticket then this needs to be autofilled and hidden. ?>
 				<p>
-					<label for="client"><?php html_esc_e( 'Company Name', 'supportflow' ) ?>:</label>
+					<label for="client"><?php esc_html_e( 'Company Name', 'supportflow' ) ?>:</label>
 					<br />
 					<input type="text" required id="client" name="client" />
 				</p>
 <?php   /* ?>
 				<p>
-					<label for="email"><?php html_esc_e( 'Your E-Mail', 'supportflow' ) ?>:</label>
+					<label for="email"><?php esc_html_e( 'Your E-Mail', 'supportflow' ) ?>:</label>
 					<br />
 					<input type="email" required id="email" name="email" />
 				</p>
 <?php //*/ ?>
 				<p>
-					<label for="title"><?php html_esc_e( 'Title', 'supportflow' ) ?>:</label>
+					<label for="title"><?php esc_html_e( 'Title', 'supportflow' ) ?>:</label>
 					<br />
 					<input type="text" required id="title" name="title" />
 				</p>
@@ -65,25 +65,25 @@ class SupportFlow_UI_SubmissionForm {
 				<?php // Create a field for Due Date which is hidden for clients ?>
 
 				<p>
-					<label for="description"><?php html_esc_e( 'Description', 'supportflow' ) ?>:</label>
+					<label for="description"><?php esc_html_e( 'Description', 'supportflow' ) ?>:</label>
 					<br />
 					<textarea required id="description" rows=5 name="description"></textarea>
 				</p>
 
 				<p>
-					<label for="attachments"><?php html_esc_e( 'Attachments', 'supportflow' ); ?>:</label>
+					<label for="attachments"><?php esc_html_e( 'Attachments', 'supportflow' ); ?>:</label>
 					<br />
 					<input type="file" name="attachments" id="attachments" />
 				</p>
 
 				<p>
-					<label for="page-url"><?php html_esc_e( 'Page URL', 'supportflow' ); ?>:</label>
+					<label for="page-url"><?php esc_html_e( 'Page URL', 'supportflow' ); ?>:</label>
 					<br />
 					<input type="text" required name="page-url" id="page-url" />
 				</p>
 
 				<p>
-					<input type="submit" value="<?php html_esc_e( 'Submit', 'supportflow' ) ?>" />
+					<input type="submit" value="<?php esc_html_e( 'Submit', 'supportflow' ) ?>" />
 				</p>
 
 			</form>
