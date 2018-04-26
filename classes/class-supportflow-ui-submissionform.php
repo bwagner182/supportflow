@@ -73,7 +73,7 @@ class SupportFlow_UI_SubmissionForm {
 				<p>
 					<label for="attachments"><?php esc_html_e( 'Attachments', 'supportflow' ); ?>:</label>
 					<br />
-					<input type="file" name="attachments" id="attachments" />
+					<input type="file" name="attachments" multiple=multiple id="attachments" />
 				</p>
 
 				<p>
@@ -145,7 +145,7 @@ class SupportFlow_UI_SubmissionForm {
 				'client_name'        => $_POST['client-name'],
 				// 'reply_author_email' => $_POST['email'],
 				// 'customer_email'   => array( $_POST['email'] ),
-				'attachments'		 => $_POST['attachments'],
+				'attachments'		 => $attachments,
 				'page_url'           => $_POST['page-url'],
 			)
 		);
